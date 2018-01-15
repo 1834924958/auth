@@ -1,0 +1,54 @@
+<include file="Public:header"/>				
+<div class="row-fluid">
+	<div class="span12">
+		<div id="top-alert" class="fixed alert alert-error" style="display: none;">
+			<button class="close fixed" style="margin-top: 4px;">&times;</button>
+			<div class="alert-content">警告内容</div>
+		</div>
+		<div id="main" class="main">	
+			<div class="portlet box blue">
+				<div class="portlet-title">
+					<div class="caption"><i class="icon-reorder"></i>修改密码</div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse"></a>
+					</div>
+				</div>
+				<div class="portlet-body form">
+					<form action="{:U('User/setpwd')}" id="form" method="post" class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">旧密码：</label>
+							<div class="controls">
+								<input type="password" name="oldpassword" class="span6 m-wrap popovers" data-content="*&nbsp;旧密码的大小写要符合规则" />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">新密码：</label>
+							<div class="controls">
+								<input type="password" name="newpassword" class="span6 m-wrap popovers"  data-content="*&nbsp;新密码的格式要符合规则(6~16位中英文,特殊符号)"  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">确认新密码：</label>
+							<div class="controls">
+								<input type="password" name="repassword" class="span6 m-wrap popovers"  data-content="*&nbsp;请再次输入新的密码"  />
+							</div>
+						</div>
+						<notempty name="data.id"> <input type="hidden" name="id" value="{$data.id}" /> </notempty>
+						<div class="form-actions">
+							<button type="submit" id="submit" class="btn blue submit-btn ajax-post" target-form="form-horizontal">确定</button>
+							<a href="{$Think.server.HTTP_REFERER}" class="btn-return">
+							<button type="button" class="btn">取消</button></a>                            
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	//执行提交表单
+	$("#submit").click(function(){
+		$("#form").submit();
+	});
+</script>
+<include file="Public:footer"/>

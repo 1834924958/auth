@@ -1,0 +1,83 @@
+<include file="Public:header"/>
+<div class="row-fluid">	
+	<div class="span12">
+			<div id="top-alert" class="fixed alert alert-error" style="display: none;">
+				<button class="close fixed" style="margin-top: 4px;">&times;</button>
+				<div class="alert-content">警告内容</div>
+			</div>
+		<div class="portlet box light-grey">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-globe"></i>权限管理</div>
+				<div class="tools">
+					<a href="javascript:;" class="collapse"></a>
+				</div>
+			</div>
+			<div class="portlet-body">
+				<div class="clearfix">
+					<a href="{:U('User/authEdit')}">
+					<div class="btn-group">
+						<button id="sample_editable_1_new" class="btn green">
+						新增&nbsp;&nbsp;<i class="icon-plus"></i>
+						</button>
+					</div>
+					</a>
+					<div class="btn-group">
+						<button id="sample_editable_1_new" url="{:U('User/authStatus',array('type'=>'forbid'))}" class="btn red ajax-post btn-warning" target-form="ids">
+						禁用&nbsp;&nbsp;<i class="icon-lock"></i>
+						</button>
+					</div>
+					<div class="btn-group">
+						<button id="sample_editable_1_new" url="{:U('User/authStatus',array('type'=>'resume'))}" class="btn green ajax-post btn-info" target-form="ids">
+						启用&nbsp;&nbsp;<i class="icon-unlock"></i>
+						</button>
+					</div>
+					<div class="btn-group">
+						<button id="sample_editable_1_new" url="{:U('User/authStatus',array('type'=>'del'))}" class="btn red ajax-post confirm btn-danger" target-form="ids">
+						删除&nbsp;&nbsp;<i class="icon-trash"></i>
+						</button>
+					</div>
+					<div class="btn-group">
+						<button id="sample_editable_1_new" url="{:U('User/authStart')}" class="btn blue ajax-post confirm btn-primary" target-form="ids">
+						重新初始化权限&nbsp;&nbsp;<i class=" icon-truck"></i>
+						</button>
+					</div>
+				</div>
+				<table class="table table-striped table-bordered table-hover" id="sample_1">
+					<thead>
+						<tr>
+							<th class="row-selected row-selected"><input class="check-all" type="checkbox"/></th>
+							<th>用户组</th>
+							<th class="hidden-480">描述</th>
+							<th class="hidden-480">授权</th>
+							<th class="hidden-480">状态</th>
+							<th >操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					<notempty name="_list">
+						<volist name="_list" id="vo">
+						<tr class="odd gradeX">
+							<td><input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/></td>
+							<td>{$vo.title}</td>
+							<td class="hidden-480">{$vo.description}</td>
+							<td class="hidden-480">
+								<a href="{:U('User/authAccess?group_name='.$vo['title'].'&group_id='.$vo['id'])}" class="btn mini blue">&nbsp;访问授权</a>
+								<a href="{:U('User/authUser?group_name='.$vo['title'].'&group_id='.$vo['id'])}" class="btn mini yellow">&nbsp;成员授权</a>
+							</td>
+							<td class="center hidden-480">
+								<eq name="vo.status" value="0"><span class="label label-inverse">{$vo.status_text}</span></eq>
+								<eq name="vo.status" value="1"><span class="label label-success">{$vo.status_text}</span></eq>
+							</td>
+							<td ><a href="{:U('User/authEdit?id='.$vo['id'])}" class="btn mini purple"><i class="icon-edit"></i>&nbsp;编辑</a></td>
+						</tr>
+						</volist>
+					<else/>
+						<td colspan="12" class="text-center" style="text-align:center;color:red;">Oh! 暂时还没有内容!</td>
+					</notempty>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="Public:footer"/>

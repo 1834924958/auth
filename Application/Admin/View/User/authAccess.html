@@ -1,0 +1,92 @@
+<include file="Public:header"/>
+<div class="row-fluid">
+	<div class="span12">
+		<div id="top-alert" class="fixed alert alert-error" style="display: none;">
+			<button class="close fixed" style="margin-top: 4px;">&times;</button>
+			<div class="alert-content">警告内容</div>
+		</div>
+		<div id="main" class="main">
+			<div class="portlet box light-grey">
+				<div class="portlet-title">
+					<a href="{:U('User/auth')}" style="color:white;"><div class="caption"><i class="icon-globe"></i>权限管理</div></a>
+					<div class="caption">&nbsp;&nbsp;访问授权</div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse"></a>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="clearfix">
+						<div class="btn-group">
+							<button id="sample_editable_1_new" class="btn green">
+							访问授权&nbsp;<i class="icon-legal"></i>
+							</button>						
+						</div>		
+						<select class="medium m-wrap select" tabindex="1" name="group">
+							<volist name="auth_group" id="vo">
+								<option value="{:U('User/authAccess',array('group_id' => $vo['id'],'group_name' =>$vo['title']))}" <eq name="vo['id']" value="$this_group['id']">selected</eq>>{$vo.title}</option>
+							</volist>
+						</select>
+					</div>
+				</div>
+				<!--剔除的一些内容--->
+				<div class="portlet box">	
+					<div class="portlet-body form">
+						<form action="{:U('User/authAccessUp')}" class="form-horizontal auth-form" method="POST">
+							<volist name="node_list" id="node">
+								<dl>
+									<dt>
+										<div class="breadcrumb"><input type="checkbox" class="auth_rules rules_all" name="rules[]" style="margin-top:-4px;" value="<?php echo $main_rules[$node['url']]?>" />&nbsp;{$node.title}管理</div>
+									</dt>
+									<dd>
+										<present name="node['child']" id="child">
+											<volist name="node['child']" id="child">
+												<div class="control-group">
+													<input type="checkbox"  class="auth_rules" name="rules[]" value="<?php echo $auth_rules[$child['url']]?>" style="margin-top:-4px;"/>&nbsp;{$child.title}
+													<span class="divsion" style="margin-left:30px;">&nbsp;&nbsp;</span>
+													<volist name="child['operator']" id="op">
+														<input type="checkbox" class="auth_rules" name="rules[]" value="<?php echo $auth_rules[$op['url']] ?>"  style="margin-top:-4px;margin-left:20px;"/>&nbsp;{$op.title}
+													</volist>
+												</div>
+											</volist>
+										</present>
+									</dd>
+								</dl>
+							</volist>
+							<input type="hidden" name="id" value="{$this_group.id}"/>
+							<div class="form-actions">
+								<button type="submit" class="btn blue submit-btn ajax-post" target-form="auth-form">确认</button>
+								<button type="button" class="btn btn-return" onclick="javascript:history.back(-1);return false;">取消</button>                            
+							</div>
+						</form>
+					</div>
+				</div>				
+				<!----剔除内容结束--->
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	+function($){
+		var rules = [{$this_group.rules}];
+		$('.auth_rules').each(function(){
+			if($.inArray(parseInt(this.value,10),rules) > -1){
+				$(this).prop('checked',true);
+			}
+			if(this.value == ''){
+				$(this).closest('span').remove();
+			}
+		});
+		//全选节点
+		$('.rules_all').on('change', function () {
+			$(this).closest('dl').find('dd').find('input').prop('checked', this.checked);
+		});
+		//分级搜索
+		$('select[name=group]').change(
+			function(){
+				location.href = this.value;
+			}
+		);
+	}(jQuery);
+</script>
+
+<include file="Public:footer"/>

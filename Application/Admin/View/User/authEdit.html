@@ -1,0 +1,46 @@
+<include file="Public:header"/>
+<div class="row-fluid">
+	<div class="span12">
+	    <div id="top-alert" class="fixed alert alert-error" style="display: none;">
+			<button class="close fixed" style="margin-top: 4px;">&times;</button>
+			<div class="alert-content">警告内容</div>
+		</div>
+		<div id="main" class="main">
+			<div class="portlet box blue">
+				<div class="portlet-title">
+					<a href="{:U('User/auth')}" style="color:white;"><div class="caption"><i class="icon-reorder"></i>权限管理</div><a>
+					<div class="caption" style="color:white;">&nbsp;&nbsp;<empty name="data">添加权限<else/>编辑权限</empty></div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse"></a>
+					</div>
+				</div>
+				<div class="portlet-body form">
+					<form action="{:U('User/authEdit')}" id="form_sample_1" method="POST"  class="form-horizontal">
+						<div class="control-group">
+							<label class="control-label">用户组<span class="required">*</span></label>
+							<div class="controls">
+								<input type="text" name="title" data-required="1" value="{$data.title}"  class="span6 m-wrap"/>
+								<input type="hidden" name="id" data-required="1" value="{$data.id}"  class="span6 m-wrap"/>
+								<span for="email" class="help-inline" style="color:red;">*&nbsp;&nbsp;权限组名称.</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">描述<span class="required">*</span></label>
+							<div class="controls">
+								<textarea class="large m-wrap"  name ="description"rows="6" style="resize:none;">{$data.description}</textarea>
+								<span for="email" class="help-inline" style="color:red;">*&nbsp;&nbsp;权限组描述.</span>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="submit" id="submit" class="btn blue submit-btn ajax-post" target-form="form-horizontal">确定</button>
+							<a href="{$Think.server.HTTP_REFERER}" >
+								<button type="button" class="btn">返回</button>
+							</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="Public:footer"/>

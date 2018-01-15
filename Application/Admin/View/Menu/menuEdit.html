@@ -1,0 +1,94 @@
+<include file="Public:header"/>
+<div class="row-fluid">
+	<div class="span12">
+		<div id="top-alert" class="fixed alert alert-error" style="display: none;">
+			<button class="close fixed" style="margin-top: 4px;">&times;</button>
+			<div class="alert-content">警告内容</div>
+		</div>
+		<div id="main" class="main">
+			<div class="portlet box blue">
+				<div class="portlet-title">
+					<a href="{:U('Admin/Menu/menu')}" style="color:white;">
+						<div class="caption"><i class="icon-reorder"></i>菜单列表</div>
+					</a>
+					<div class="caption">
+						<empty name="data">
+							&nbsp;&nbsp;菜单添加
+						<else/>
+							&nbsp;&nbsp;菜单编辑
+						</empty>
+					</div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse"></a>
+					</div>
+				</div>
+				<div class="portlet-body form">
+					<form action="{:U('Admin/Menu/menuEdit')}" method ="POST" id="form" class="form-horizontal">
+						<empty name="data.id">
+						<else/>
+							<div class="control-group">
+								<label class="control-label">ID：</label>
+								<div class="controls">
+									<input class="span6 m-wrap" type="text" name="id" value="{$data.id}" disabled />
+									<span class="help-inline" style="color:red;">*&nbsp;ID不可以进行更改.</span>
+								</div>
+							</div>
+						</empty>
+						<div class="control-group">
+							<label class="control-label">菜单名：</label>
+							<div class="controls">
+								<input type="text" name="title" value="{$data.title}" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;菜单名要符合规则."/>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">URL链接：</label>
+							<div class="controls">
+								<input type="text" name="url" value="{$data.url}" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;输入模块/控制器/方法即可,例如:Admin/Ches/index."/>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label class="control-label">菜单图标：</label>
+							<div class="controls">
+								<input type="text" name="ico_name" value="{$data.ico_name}" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;菜单的图标要符合规则."/>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">菜单排序：</label>
+							<div class="controls">
+								<input type="text" name="sort" value="{$data.sort}" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;菜单的排序按照正序排序(正数)."/>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">添加时间：</label>
+							<div class="controls">
+								<input type="text" name="addtime" value="{$data['addtime']|addtime}" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;往表中进行添加数据的时间."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">是否隐藏：</label>
+							<div class="controls">
+								<select name="hide" class="span6  m-wrap popovers" data-placeholder="Choose a Category" data-trigger="hover" data-content="*&nbsp;不同的状态值代表不同的操作.">
+									<option value="1" <eq name="data.hide" value="1">selected</eq>>隐藏</option>
+									<option value="0" <eq name="data.hide" value="0">selected</eq>>不隐藏</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="submit" id="submit" class="btn blue ajax-post" target-form="form-horizontal">确认</button>
+							<a class="btn-return" href="{$Think.server.HTTP_REFERER}"><button type="button" class="btn">取消</button></a>
+							<notempty name="data.id"><input type="hidden" name="id" value="{$data.id}"/></notempty>                            
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	//执行提交表单的操作
+	$('#submit').click(function(){
+		$('#form').submit();
+	});
+</script>
+<include file="Public:footer"/>

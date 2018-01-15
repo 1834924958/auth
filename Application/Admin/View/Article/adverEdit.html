@@ -1,0 +1,149 @@
+<include file="Public:header"/>
+
+<div class="row-fluid">
+	<div class="span12">
+		<div id="top-alert" class="fixed alert alert-error" style="display: none;">
+			<button class="close fixed" style="margin-top: 4px;">&times;</button>
+			<div class="alert-content">警告内容</div>
+		</div>
+		<div id="main" class="main">
+			<div class="portlet box blue">
+				<div class="portlet-title">
+					<a href="{:U('Article/adver')}" style="color:white">
+						<div class="caption"><i class="icon-reorder"></i>广告管理</div>
+					</a>
+					<div class="caption">
+						<empty name="data">
+							&nbsp;&nbsp;广告添加
+						<else/>
+							&nbsp;&nbsp;广告编辑
+						</empty>
+					</div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse"></a>
+					</div>
+				</div>
+				<div class="portlet-body form">
+					<form action="{:U('Article/adverEdit')}" class="form-horizontal" method="POST" id="from">
+						<empty name="data.id">						
+						<else/>
+							<div class="control-group">
+								<label class="control-label">广告管理ID：</label>
+								<div class="controls">
+									<input class="span6 m-wrap" type="text" name="id" value="{$data.id}"  disabled />
+									<span class="help-inline" style="color:red;">*&nbsp;ID不可以进行更改.</span>
+								</div>
+							</div>
+						</empty>
+						<div class="control-group">
+							<label class="control-label">图片名称：</label>
+							<div class="controls">
+								<input type="text" name="name" value="{$data.name}" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;对图片的简单的介绍."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">图片链接：</label>
+							<div class="controls">
+								<input type="text" name="url" value="{$data.url}"  class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;图片的Url地址，便于进行跳转."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">上传图片：</label>
+							<div class="controls">
+								<div id="addpicContainer">
+									<!-- 利用multiple="multiple"属性实现添加多图功能 -->
+									<!-- position: absolute;left: 10px;top: 5px;只针对本用例将input隐至图片底下。-->
+									<!-- height:0;width:0;z-index: -1;是为了隐藏input，因为Chrome下不能使用display:none，否则无法添加文件 -->
+									<!-- onclick="getElementById('inputfile').click()" 点击图片时则点击添加文件按钮 -->
+									<notempty name="data.img">
+										<!--没有图片显示默认图片-->
+										<img id="up_img" onclick="getElementById('inputfile').click()" style="cursor:pointer;max-width:500px;" title="点击添加图片" alt="点击添加图片" src="__UPLOAD__/adver/{$data.img}">
+										<else/>
+										<!--没有图片显示默认图片-->
+										<img id="up_img" onclick="getElementById('inputfile').click()" style="cursor:pointer;max-width:500px;" title="点击添加图片" alt="点击添加图片" src="__PUBLIC__/Admin/images/addimg.png">
+									</notempty>
+									<input type="hidden" id="img" name="img" value="{$data.img}">
+									<input type="file" id="inputfile" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;" value=""/>
+								</div>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">添加时间：</label>
+							<div class="controls">
+								<input type="text" name="addtime" value="{$data['addtime']|addtime}" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;往表中进行添加数据的时间."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">编辑时间：</label>
+							<div class="controls">
+								<input type="text"  name="endtime" value="{$data['endtime']|addtime}" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;在表中进行对本条数据编辑的时间."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">排序：</label>
+							<div class="controls">
+								<input type="text"  name="sort" value="{$data.sort}"  class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;不同的值在前台中代表在前台中不同的位置."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">状态：</label>
+							<div class="controls">
+								<select name="status" class="chosen-with-diselect span6 m-wrap popovers"  data-trigger="hover" data-content="*&nbsp;不同的状态值代表不同的操作." >
+									<option value="1" <eq name="data.status" value="1">selected</eq>>可用</option>
+									<option value="0" <eq name="data.status" value="0">selected</eq>>禁用</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="submit" id="submit" class="btn blue  ajax-post" target-form="form-horizontal">确认</button>
+							<a class="btn-return" href="{$Think.server.HTTP_REFERER}">
+								<button type="button" class="btn">取消</button> 
+							</a> 
+							<notempty name="data.id"><input type="hidden" name="id" value="{$data.id}"/></notempty>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	//执行提交表单的操作
+	$('#submit').click(function(){
+		$('#form').submit();
+	});
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		//响应文件添加成功事件
+		$('#inputfile').change(function(){
+			//创建formdata对象
+			var data = new FormData();
+			//为formdata对象添加数据
+			$.each($('#inputfile')[0].files,function(i,file){
+				data.append('upload_file' + i,file);
+			});
+			//执行发送数据
+			$.ajax({
+				url:"{:U('Article/adverImage')}",
+				type:'POST',
+				data:data,
+				cache:false,
+				contentType:false,
+				processData:false,
+				success:function(data){
+					if(data){
+						$('#up_img').attr("src","__UPLOAD__/adver/" + data);
+						$('#img').val(data);
+						$('#up_img').show();
+					}
+				},
+				error:function(){
+					alert('上传出错');
+					$(".loading").hide();//加载失败移除加载图片
+				}
+			});
+		});
+	});
+</script>
+<include file="Public:footer"/>

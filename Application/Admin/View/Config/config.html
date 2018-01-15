@@ -1,0 +1,136 @@
+<include file="Public:header"/>
+<div class="row-fluid">
+	<div class="span12">
+		<div id="top-alert" class="fixed alert alert-error" style="display: none;">
+			<button class="close fixed" style="margin-top: 4px;">&times;</button>
+			<div class="alert-content">警告内容</div>
+		</div>
+		<div id="main" class="main">
+			<div class="portlet box blue">
+				<div class="portlet-title">
+					<div class="caption"><i class="icon-reorder"></i>基本设置</div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse"></a>
+					</div>
+				</div>
+				<div class="portlet-body form">
+					<form action="{:U('Config/configEdit')}" class="form-horizontal" method="POST" id="from" enctype="multipart/form-data">
+						<div class="control-group">
+							<label class="control-label">网站名称：</label>
+							<div class="controls">
+								<input type="text" name="web_name" value="{$data.web_name}" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;网站的名称介绍."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">网站标题：</label>
+							<div class="controls">
+								<input type="text" name="web_title" value="{$data.web_title}" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;网站的标题."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">网站Logo：</label>
+							<div class="controls">
+								<div id="addpicContainer">
+									<!-- 利用multiple="multiple"属性实现添加多图功能 -->
+									<!-- position: absolute;left: 10px;top: 5px;只针对本用例将input隐至图片底下。-->
+									<!-- height:0;width:0;z-index: -1;是为了隐藏input，因为Chrome下不能使用display:none，否则无法添加文件 -->
+									<!-- onclick="getElementById('inputfile').click()" 点击图片时则点击添加文件按钮 -->
+									<notempty name="data.web_logo">
+										<!--没有图片显示默认图片-->
+										<img id="up_img" onclick="getElementById('inputfile').click()" style="cursor:pointer;max-width:400px;" title="点击添加图片" alt="点击添加图片" src="__UPLOAD__/config/{$data.web_logo}">
+										<else/>
+										<!--没有图片显示默认图片-->
+										<img id="up_img" onclick="getElementById('inputfile').click()" style="cursor:pointer;max-width:400px;" title="点击添加图片" alt="点击添加图片" src="__PUBLIC__/Admin/images/addimg.png">
+									</notempty>
+									<input type="hidden" id="img" name="web_logo" value="{$data.web_logo}">
+									<input type="file" id="inputfile" style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;" value=""/>
+								</div>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">网站关键字：</label>
+							<div class="controls">
+								<input type="text" name="web_keywords"  class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;便于搜索引擎进行搜索."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">网站描述：</label>
+							<div class="controls">
+								<input type="text" name="web_description" value="{$data.web_description}" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;对网站的一些简单介绍."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">备案号：</label>
+							<div class="controls">
+								<input type="email" name="web_icp" value="{$data.web_icp}" class="span6 m-wrap popovers" data-trigger="hover" data-content="*&nbsp;便于工信部进行查询."  />
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">网站状态：</label>
+							<div class="controls">
+								<select name="web_close" class="chosen-with-diselect span6 m-wrap popovers"  data-trigger="hover" data-content="*&nbsp;不同的状态值代表不同的操作." >
+									<option value="1" <eq name="data['web_close']" value="1">selected</eq>>正常</option>
+									<option value="0" <eq name="data['web_close']" value="0">selected</eq>>禁止访问</option>
+								</select>
+							</div>
+						</div>
+						<div class="control-group">
+							<label class="control-label">禁止访问原因：</label>
+							<div class="controls">
+								<textarea class="span6 m-wrap popovers" name="web_ban" rows="3" style="resize:none;" data-trigger="hover" data-content="*&nbsp;禁止访问，便于在前台中显示.">{$data['web_ban']}</textarea>
+							</div>
+						</div>
+						<div class="form-actions">
+							<button type="submit" id="submit" class="btn blue  submit-btn ajax-post" target-form="form-horizontal">确认</button>
+							<a class="btn-return" href="{$Think.server.HTTP_REFERER}">
+								<button type="button" class="btn">取消</button> 
+							</a> 
+							<notempty name="data.id"><input type="hidden" name="id" value="{$data.id}"/></notempty>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	//执行提交表单的操作
+	$('#submit').click(function(){
+		$('#form').submit();
+	});
+</script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		//相应文件添加成功的事件
+		$("#inputfile").change(function(){
+			//创建formdata对象
+			var data = new FormData();
+			//为formdata对象添加数据
+			$.each($('#inputfile')[0].files,function(i,file){
+				data.append('upload_file' + i,file);
+			});
+			//执行发送数据
+			$.ajax({
+				url:"{:U('Config/image')}",
+				type: 'POST',
+				data:data,
+				cache:false,
+				contentType:false,
+				processData:false,
+				success:function(data){
+					if(data){
+						$('#up_img').attr("src","__UPLOAD__/config/" + data);
+						$('#img').val(data);
+						$('#up_img').show();
+					}
+				},
+				error:function(){
+					alert('上传成功');
+					$(".loading").hide();
+					//加载失败移除加载的图片
+				}
+			});
+		});
+	});
+</script>
+<include file="Public:footer"/>

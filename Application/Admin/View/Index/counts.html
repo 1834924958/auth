@@ -1,0 +1,290 @@
+<include file="Public:header"/>
+<div class="row-fluid">
+	<div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+		<div class="dashboard-stat blue">
+			<div class="visual">
+				<i class="icon-comments"></i>
+			</div>
+			<div class="details">
+				<div class="number">
+					1349
+				</div>
+				<div class="desc">
+					New Feedbacks
+				</div>
+			</div>
+			<a class="more" href="#">
+				View more <i class="m-icon-swapright m-icon-white"></i>
+			</a>
+		</div>
+	</div>
+	<div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+		<div class="dashboard-stat green">
+			<div class="visual">
+				<i class="icon-shopping-cart"></i>
+			</div>
+			<div class="details">
+				<div class="number">549</div>
+				<div class="desc">New Orders</div>
+			</div>
+			<a class="more" href="#">
+				View more <i class="m-icon-swapright m-icon-white"></i>
+			</a>
+		</div>
+	</div>
+	<div class="span3 responsive" data-tablet="span6  fix-offset" data-desktop="span3">
+		<div class="dashboard-stat purple">
+			<div class="visual">
+				<i class="icon-globe"></i>
+			</div>
+			<div class="details">
+				<div class="number">+89%</div>
+				<div class="desc">Brand Popularity</div>
+			</div>
+			<a class="more" href="#">
+				View more <i class="m-icon-swapright m-icon-white"></i>
+			</a>
+		</div>
+	</div>
+	<div class="span3 responsive" data-tablet="span6" data-desktop="span3">
+		<div class="dashboard-stat yellow">
+			<div class="visual">
+				<i class="icon-bar-chart"></i>
+			</div>
+			<div class="details">
+				<div class="number">12,5M$</div>
+				<div class="desc">Total Profit</div>
+			</div>
+			<a class="more" href="#">
+				View more <i class="m-icon-swapright m-icon-white"></i>
+			</a>
+		</div>
+	</div>
+	<div class="tab-pane ">
+		<div class="portlet box blue">
+			<div class="portlet-title">
+				<div class="caption"><i class="icon-reorder"></i>系统概览</div>
+				<div class="tools">
+					<a href="javascript:;" class="collapse"></a>
+				</div>
+			</div>
+			<div class="portlet-body form">
+				<div class="form-horizontal form-view">
+					<h3 class="form-section">基本信息</h3>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >系统版本:</label>
+								<div class="controls">
+									<span class="text">正版授权</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label">服务器操作系统:</label>
+								<div class="controls">
+									<span class="text">{$Think.const.PHP_OS}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >运行环境:</label>
+								<div class="controls">
+									<span class="text">{$Think.server.SERVER_SOFTWARE}</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >PHP版本:</label>
+								<div class="controls">
+									<span class="text">{$Think.PHP_VERSION}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >PHP运行方式:</label>
+								<div class="controls">
+									<span class="text">{$phpModel}</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >ThinkPHP版本:</label>
+								<div class="controls">
+									<span class="text">{$Think.VERSION}&nbsp;&nbsp;<a href="http://www.thinkphp.cn/" target="_blank"  style="text-decoration: none;">[查看最新版本]</a></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >上传附件限制:</label>
+								<div class="controls">
+									<span class="text">{$fileLimit}</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >执行时间限制:</label>
+								<div class="controls">
+									<span class="text">{$etimeLimit}&nbsp;秒</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >剩余空间:</label>
+								<div class="controls">
+									<span class="text">{$Rspace}</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >register_globals:</label>
+								<div class="controls">
+									<span class="text">{$Variable}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >magic_quotes_gpc:</label>
+								<div class="controls">
+									<span class="text">{$jiexi}</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >magic_quotes_runtime:</label>
+								<div class="controls">
+									<span class="text">{$zhuanyi}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >Mysql版本:</label>
+								<div class="controls">
+									<span class="text">{$arr['mysql']['0']['v']}</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >服务器IP:</label>
+								<div class="controls"><span class="text">{$_SERVER['SERVER_ADDR']}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >你的IP:</label>
+								<div class="controls">
+									<span class="text">{$_SERVER['REMOTE_ADDR']}</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >服务器端口:</label>
+								<div class="controls"><span class="text">{$_SERVER['SERVER_PORT']}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >绝对路径:</label>
+								<div class="controls">
+									<span class="text">{$_SERVER['DOCUMENT_ROOT']}</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >授权域名:</label>
+								<div class="controls"><span class="text">{$_SERVER['HTTP_HOST']}</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >授权周期:</label>
+								<div class="controls">
+									<span class="text">终身</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >售后周期:</label>
+								<div class="controls"><span class="text">一年</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >网站域名:</label>
+								<div class="controls">
+									<span class="text">{$_SERVER['SERVER_NAME']}</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >官方网址：</label>
+								<div class="controls"><span class="text"><a href="#" style="text-decoration:none;">{$_SERVER['SERVER_NAME']}</a></span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row-fluid">
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >版权所有:</label>
+								<div class="controls">
+									<span class="text"><a href="#" style="text-decoration:none;">网站名</a
+									>&nbsp;&nbsp;版权所有,未经许可,请勿传播</span>
+								</div>
+							</div>
+						</div>
+						<div class="span6 ">
+							<div class="control-group">
+								<label class="control-label" >风险警告：</label>
+								<div class="controls"><span class="text">为保障程序的正常运行,请勿随意篡改代码!</span>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="Public:footer"/>

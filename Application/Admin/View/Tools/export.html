@@ -1,0 +1,149 @@
+<include file="Public:header"/>
+<div class="row-fluid">
+	<div class="span12">
+		<div id="top-alert" class="fixed alert alert-error" style="display: none;">
+			<button class="close fixed" style="margin-top: 4px;">&times;</button>
+			<div class="alert-content">警告内容</div>
+		</div>
+		<div id="main" class="main">
+			<div class="portlet box light-grey">
+				<div class="portlet-title">
+					<div class="caption"><i class="icon-globe"></i>备份数据库</div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse"></a>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="clearfix">
+						<div class="btn-group">
+							<a id="export" class="btn" href="javascript:;" autocomplete="off">
+								<button id="sample_editable_1_new" class="btn green">
+								立即备份&nbsp;&nbsp;<i class="icon-plus"></i>
+								</button>
+							</a>
+						</div>
+						<div class="btn-group">
+							<a href="{:U('Tools/optimize')}" id="optimize" >
+								<button id="sample_editable_1_new" class="btn blue">
+									优化表&nbsp;&nbsp;<i class="icon-wrench"></i>
+								</button>
+							</a>
+						</div>
+						<div class="btn-group">
+							<a href="{:U('Tools/repair')}" id="repair" >
+								<button id="sample_editable_1_new" class="btn red">
+									修复表&nbsp;&nbsp;<i class="icon-ambulance"></i>
+								</button>
+							</a>
+						</div>
+					</div>
+					<form id="export-form" method="post" action="{:U('Tools/export')}">
+						<table class="table table-striped table-bordered table-hover" id="sample_1">
+							<thead>
+								<tr>
+									<th style="width:8px;"><input type="checkbox" class="check-all" checked="checked"/></th>
+									<th>表名</th>
+									<th class="hidden-480">数据量</th>
+									<th class="hidden-480">数据大小</th>
+									<th class="hidden-480">创建时间</th>
+									<th>备份状态</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<volist name="list" id="table">
+								<tr class="odd gradeX">
+									<td><input type="checkbox" class="ids" name = "tables[]" value="{$table.name}" checked="checked"/></td>
+									<td>{$table.name}</td>
+									<td class="hidden-480">{$table.rows}</td>
+									<td class="hidden-480">{$table.data_length}</td>
+									<td class="center hidden-480">{$table.create_time}</td>
+									<td class="info">未备份</td>
+									<td>
+										<a href="{:U('Tools/excel?tables='.$table['name'])}" class="btn mini purple"><i class="icon-share"></i>&nbsp;导出表</a>
+										<a href="{:U('Tools/optimize?tables='.$table['name'])}" class="btn mini blue ajax-get"><i class="icon-wrench"></i>&nbsp;优化表</a>
+										<a href="{:U('Tools/repair?tables='.$table['name'])}" class="btn mini red ajax-get"><i class="icon-ambulance"></i>&nbsp;修复表</a>
+									</td>
+								</tr>
+								</volist>
+							</tbody>
+						</table>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	(function($){
+		var $form=$("#export-form"),$export=$("#export"),tables
+		$optimize=$("#optimize"),$repair=$("#repair");
+		$optimize.add($repair).click(function(){
+			$.post(this.href,$form.serialize(),function(data){
+				if(data.status){
+					updateAlert(data.info,'alert-success');
+				}else{
+					updateAlert(data.info,'alert-error');
+				}
+				setTimeout(function(){
+					$('#top-alert').find('button').click();
+					$(that).removeClass('disabled').prop('disabled',false);
+				},1500);
+			},"json");
+			return false;
+		});
+		$export.click(function(){
+			$export.parent().children().addClass("disabled");
+			$export.html("正在发送备份请求...");
+			$.post($form.attr("action"),$form.serialize(),function(data){
+				if(data.status){
+					tables=data.tables;
+					$export.html(data.info+"开始备份，请不要关闭本页面！");
+					backup(data.tab);
+					window.onbeforeunload=function(){
+						return "正在备份数据库，请不要关闭！"
+					}
+				}else{
+					updateAlert(data.info,'alert-error');
+					$export.parent().children().removeClass("disabled");
+					$export.html("立即备份");
+					setTimeout(function(){
+						$('#top-alert').find('button').click();
+						$(that).removeClass('disabled').prop('disabled',false);
+					},1500);
+				}
+			},"json");
+			return false;
+		});
+		function backup(tab,status){
+			status&&showmsg(tab.id,"开始备份...(0%)");
+			$.get($form.attr("action"),tab,function(data){
+				if(data.status){
+					//alert(tab.id + '|' +data.info);
+					showmsg(tab.id,data.info);
+					if(!$.isPlainObject(data.tab)){
+						$export.parent().children().removeClass("disabled");
+						$export.html("备份完成，点击重新备份");
+						window.onbeforeunload=function(){
+							return null
+						}
+						return;
+					}
+					backup(data.tab,tab.id!=data.tab.id);
+				}else{
+					updateAlert(data.info,'alert-error');
+					$export.parent().children().removeClass("disabled");
+					$export.html("立即备份");
+					setTimeout(function(){
+						$('#top-alert').find('button').click();
+						$(that).removeClass('disabled').prop('disabled',false);
+					},1500);
+				}
+			},"json");
+		}
+		function showmsg(id,msg){
+			$form.find("input[value="+tables[id]+"]").closest("tr").find(".info").html(msg);
+		}
+	})(jQuery);
+</script>
+<include file="Public:footer"/>

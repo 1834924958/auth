@@ -1,0 +1,167 @@
+<include file="Public:header"/>
+<div class="row-fluid">
+	<div class="span12">
+		<div id="top-alert" class="fixed alert alert-error" style="display: none;">
+			<button class="close fixed" style="margin-top: 4px;">&times;</button>
+			<div class="alert-content">警告内容</div>
+		</div>
+		<div id="main" class="main">
+			<div class="portlet box light-grey">
+				<div class="portlet-title">
+					<div class="caption"><i class="icon-globe"></i>文章管理</div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse"></a>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="clearfix">
+						<div class="btn-group">
+							<a href="{:U('Article/articlesEdit')}">
+								<button id="sample_editable_1_new" class="btn green">
+								新增&nbsp;&nbsp;<i class="icon-plus"></i>
+								</button>
+							</a>
+						</div>
+						<div class="btn-group">
+							<button id="sample_editable_1_new" class="btn red ajax-post btn-warning" url="{:U('Article/articlesStatus',array('type'=>'forbid'))}" target-form="ids">
+							禁用&nbsp;&nbsp;<i class="icon-lock"></i>
+							</button>
+						</div>
+						<div class="btn-group">
+							<button id="sample_editable_1_new" class="btn green ajax-post btn-info" url="{:U('Article/articlesStatus',array('type'=>'resume'))}" target-form="ids">
+							启用&nbsp;&nbsp;<i class="icon-unlock"></i>
+							</button>
+						</div>
+						<div class="btn-group">
+							<button id="sample_editable_1_new" class="btn red ajax-post confirm btn-danger" url="{:U('Article/articlesStatus',array('type'=>'del'))}" target-form="ids">
+							删除&nbsp;&nbsp;<i class="icon-trash"></i>
+							</button>
+						</div>
+						<!--执行搜索功能-->
+						<div class="btn-group pull-right">
+							<form name="formSearch" id="formSearch" method="get" class="btn-group pull-right">
+								<div class="btn-group pull-right" id="sample_1_filter">
+									<select style="width: 160px; height:34px;float: left; margin-right: 10px;" name="status" class="form-control">
+										<option value=""
+										<empty name="Think.get.status">selected</empty>
+										>全部状态</option>
+										<option value="1"
+										<eq name="Think.get.status" value="1">selected</eq>
+										>冻结状态</option>
+										<option value="2"
+										<eq name="Think.get.status" value="2">selected</eq>
+										>正常状态</option>
+									</select>
+									<select style="width: 160px; height:34px;float: left; margin-right: 10px;" name="type" class="form-control">
+										<option value=""
+										<empty name="Think.get.type">selected</empty>
+										>类型标题</option>
+										<volist name="article_type" id="at">
+										<option value="{$key}"
+										<eq name="Think.get.type" value="$key">selected</eq>
+										>{$at}</option>
+										</volist>
+									</select>
+									<select style=" width: 160px; height:34px; float: left; margin-right: 10px;" name="field" class="form-control">
+										<option value="title"
+										<empty name="Think.get.field" value="title">selected</empty>
+										>发布人</option>
+										<option value="title"
+										<empty name="Think.get.field" value="title">selected</empty>
+										>文章标题</option>
+										<option value="sort"
+										<empty name="Think.get.field" value="sort">selected</empty>
+										>排序</option>
+										<option value="id"
+										<eq name="Think.get.field" value="id">selected</eq>
+										>文章ID</option>
+									</select>
+									<input type="text"  class="m-wrap medium  search-input form-control" name="name" placeholder="请输入查询的内容" value="{$Think.get.name}" />
+									<a href="javascript:;" id="search" style="margin-right:10px;">
+										<span class="input-group-btn">
+											<button type="submit" class="btn btn-xs  btn-purple">
+												<span class="ace-icon fa fa-search icon-on-right bigger-110">
+												</span>
+												<i class="icon-search"></i>&nbsp;搜索
+											</button>
+										</span>
+									</a>
+									<a href="{:U('Article/articles')}">
+										<button type="button" class="btn btn-xs  btn-purple">
+										<span class="ace-icon fa fa-globe icon-on-right bigger-110">
+										</span>
+										<i class="icon-chevron-down"></i>&nbsp;显示全部
+										</button>
+									</a>
+								</div>
+							</form>
+							<script type="text/javascript">
+								//执行搜索的功能
+								$(function () {
+									$('#search').click(function () {
+										$('#formSearch').submit();
+									});
+								});
+								//回车搜索
+								$(".search-input").keyup(function (e) {
+									if (e.keyCode === 13) {
+										$("#search").click();
+										return false;
+									}
+								});
+							</script>
+						</div>	
+						<!---搜索功能结束---->
+					</div>
+					<table class="table table-striped table-bordered table-hover" id="sample_1">
+						<thead>
+							<tr>
+								<th class="row-selected row-selected">
+									<input class="check-all" type="checkbox"/>
+								</th>
+								<th>ID</th>
+								<th>发布人</th>
+								<th class="hidden-480">文章类型</th>
+								<th class="hidden-480">文章标题</th>
+								<th class="hidden-480">添加时间</th>
+								<th class="hidden-480">编辑时间</th>
+								<th class="hidden-480">排序</th>
+								<th class="hidden-480">状态</th>
+								<th >操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<notempty name="list">
+								<volist name="list" id="vo">
+									<tr class="odd gradeX">
+										<td>
+											<input class="ids" type="checkbox" name="id[]" value="{$vo.id}"/>
+										</td>
+										<td>{$vo.id}</td>
+										<td>{$vo.adminid}</td>
+										<td>{$vo.type}</td>
+										<td>{$vo.title}</td>
+										<td class="hidden-480">{$vo.addtime|addtime}</td>
+										<td class="hidden-480">{$vo.endtime|addtime}</td>
+										<td>{$vo.sort}</td>
+										<td >
+											<eq name="vo.status" value="0"><span class="label label-danger"><i class="icon-lock"></i>&nbsp;禁用</span></eq>
+											<eq name="vo.status" value="1"><span class="label label-success"><i class="icon-unlock"></i>&nbsp;启用</span></eq>
+										</td>
+										<td ><a href="{:U('Article/articlesEdit?id='.$vo['id'])}" class="btn mini purple"><i class="icon-edit"></i>&nbsp;编辑</a></td>
+									</tr>
+								</volist>
+							<else/>
+								<td colspan="12" class="text-center" style="text-align:center;color:red;">Oh! 暂时还没有内容!</td>
+							</notempty>
+						</tbody>
+					</table>
+					<div class="page">
+						<div>{$page}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<include file="Public:footer"/>

@@ -1,0 +1,149 @@
+<include file="Public:header"/>
+<div class="row-fluid">
+	<div class="span12">
+		<div id="top-alert" class="fixed alert alert-error" style="display: none;">
+			<button class="close fixed" style="margin-top: 4px;">&times;</button>
+			<div class="alert-content">警告内容</div>
+		</div>
+		<div id="main" class="main">
+			<div class="portlet box light-grey">
+				<div class="portlet-title">
+					<div class="caption"><i class="icon-globe"></i>管理员管理</div>
+					<div class="tools">
+						<a href="javascript:;" class="collapse"></a>
+					</div>
+				</div>
+				<div class="portlet-body">
+					<div class="clearfix">
+						<div class="btn-group">
+							<a href="{:U('User/adminEdit')}">
+								<button id="sample_editable_1_new" class="btn green">
+								新增&nbsp;<i class="icon-plus"></i>
+								</button>
+							</a>
+						</div>
+						<div class="btn-group">
+							<button id="sample_editable_1_new" class="btn red ajax-post btn-warning" url="{:U('User/adminStatus',array('type'=>'forbid','moble'=>'Admin'))}" target-form="ids">
+							禁用&nbsp;<i class="icon-lock"></i>
+							</button>
+						</div>
+						<div class="btn-group">
+							<button id="sample_editable_1_new" class="btn green ajax-post btn-info" url="{:U('User/adminStatus',array('type'=>'resume','moble'=>'Admin'))}" target-form="ids">
+							启用&nbsp;<i class="icon-unlock"></i>
+							</button>
+						</div>
+						<div class="btn-group">
+							<button id="sample_editable_1_new" class="btn red ajax-post confirm btn-danger" url="{:U('User/adminStatus',array('type'=>'del','moble'=>'Admin'))}" target-form="ids">
+							删除&nbsp;<i class="icon-trash"></i>
+							</button>
+						</div>
+						<form name="formSearch" id="formSearch" method="get" class="btn-group pull-right">
+							<div class="btn-group pull-right" id="sample_1_filter">
+								<select style="width: 160px; height:34px;float: left; margin-right: 10px;" name="status" class="form-control">
+									<option value=""
+									<empty name="Think.get.status">selected</empty>
+									>全部状态</option>
+									<option value="1"
+									<eq name="Think.get.status" value="1">selected</eq>
+									>冻结状态</option>
+									<option value="2"
+									<eq name="Think.get.status" value="2">selected</eq>
+									>正常状态</option>
+								</select>
+								<select style=" width: 160px; height:34px; float: left; margin-right: 10px;" name="field" class="form-control">
+									<option value="username"
+									<empty name="Think.get.field">selected</empty>
+									>用户名</option>
+									<option value="nickname"
+									<eq name="Think.get.field" value="nickname">selected</eq>
+									>真实姓名</option>
+									<option value="mobile"
+									<eq name="Think.get.field" value="mobile">selected</eq>
+									>手机号码</option>
+									<option value="email"
+									<eq name="Think.get.field" value="email">selected</eq>
+									>邮箱</option>
+									<option value="id"
+									<eq name="Think.get.field" value="id">selected</eq>
+									>用户ID</option>
+								</select>
+								<input type="text"  class="m-wrap medium" name="name" placeholder="请输入查询的内容" value="{$Think.get.name}" />
+								<a href="javascript:;" id="search" style="margin-right:10px;">
+									<span class="input-group-btn">
+										<button type="submit" class="btn btn-xs  btn-purple">
+											<span class="ace-icon fa fa-search icon-on-right bigger-110">
+											</span>
+											<i class="icon-search"></i>&nbsp;搜索
+										</button>
+									</span>
+								</a>
+								<a href="{:U('User/admin')}">
+									<button type="button" class="btn btn-xs  btn-purple">
+									<span class="ace-icon fa fa-globe icon-on-right bigger-110">
+									</span>
+									<i class="icon-chevron-down"></i>&nbsp;显示全部
+									</button>
+								</a>
+							</div>
+						</form>
+						<script type="text/javascript">
+							//执行搜索的功能
+							$(function () {
+								$('#search').click(function () {
+									$('#formSearch').submit();
+								});
+							});
+							//回车搜索
+							$(".search-input").keyup(function (e) {
+								if (e.keyCode === 13) {
+									$("#search").click();
+									return false;
+								}
+							});
+						</script>
+					</div>
+					<table class="table table-striped table-bordered table-hover" id="sample_1">
+						<thead>
+							<tr>
+								<th style="width:8px;"><input type="checkbox" class="check-all"/></th>
+								<th>ID</th>
+								<th class="hidden-480">用户名</th>
+								<th class="hidden-480">真实姓名</th>
+								<th class="hidden-480">手机号</th>
+								<th>邮箱</th>
+								<th>状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<notempty name="list">
+							<volist name="list" id="vo">
+							<tr class="odd gradeX">
+								<td><input type="checkbox" class="ids" name="id[]" value="{$vo.id}" /></td>
+								<td>{$vo.id}</td>
+								<td>{$vo.username}</td>
+								<td>{$vo.nickname}</td>
+								<td>{$vo.mobile}</td>
+								<td class="hidden-480"><a href="#" style="text-decoration:none;">{$vo.email}</a></td>
+								<td class="center hidden-480">
+									<eq name="vo.status" value="0"><span class="label label-inverse">禁用</span></eq>
+									<eq name="vo.status" value="1"><span class="label label-success">启用</span></eq>
+								</td>
+								<td ><a href="{:U('User/adminEdit?id='.$vo['id'])}" class="btn mini purple"><i class="icon-edit"></i>&nbsp;编辑</a></td>
+							</tr>
+							</volist>
+							<else/>
+								<td colspan="12" style="text-align:center;color:red;font-size:14px;">oh!&nbsp;&nbsp;暂时还没有内容！</td>
+							</notempty>
+						</tbody>
+					</table>
+					<!--执行分页的效果-->
+					<div class="page">
+						<div>{$page}</div>
+					</div>
+				</div>
+			</div>
+		</div>	
+	</div>
+</div>
+<include file="Public:footer"/>
